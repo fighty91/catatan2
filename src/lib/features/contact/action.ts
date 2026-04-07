@@ -25,13 +25,6 @@ const serviceApp = 'accountingProfit';
 //   });
 // };
 
-// types.ts (atau letakkan di file yang sama)
-// export interface Contact {
-//   id: string;
-//   name: string;
-//   [key: string]: any; // Untuk properti tambahan lainnya
-// }
-
 export const getContactsFromAPI = () => {
   return (dispatch: Dispatch): Promise<Contact[]> => {
     return new Promise((resolve) => {
