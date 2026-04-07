@@ -24,6 +24,16 @@ const Menuitems = [
   },
   {
     navlabel: true,
+    subheader: "DATA",
+  },
+  {
+    id: uniqueId(),
+    title: "Customer",
+    icon: IconTypography,
+    href: "/customer",
+  },
+  {
+    navlabel: true,
     subheader: "UTILITIES",
   },
   {
