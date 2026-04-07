@@ -2,7 +2,7 @@
 import { Typography } from '@mui/material';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useEffect } from 'react';
 import { getContactsFromAPI } from '@/lib/features/contact/action';
 
@@ -22,6 +22,11 @@ const Customer = () => {
 
     fetchContacts();
   }, [dispatch]);
+
+  const contact = useAppSelector(state => state.contact.value);
+  useEffect(() => {
+    console.log(contact);
+  }, [contact])
 
   return (
     <PageContainer title="Customer Page" description="this is Customer page">

@@ -1,29 +1,33 @@
 import { RootState } from "@/lib/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// interface Contact {
+//   id: number;
+//   name: string;
+// }
+
+// export interface ContactState {
+//   value: Contact[];
+// }
+
 export interface ContactState {
-  value: object
+  value: any[];
 }
 
-// Option A: Export a type alias for the array (Recommended)
-// export type ConstactList = ContactState[];
-
-const initialState = {
-  value: {}
-} as ContactState
+const initialState: ContactState = {
+  value: []
+}
 
 export const contactSlice = createSlice({
   name: 'contact',
   initialState,
   reducers: {
-    setContact: (state, action: PayloadAction<object>) => {
-      state.value = action.payload
+    setContact: (state, action: PayloadAction<any[]>) => {
+      state.value = action.payload;
     }
   }
 });
 
 export const { setContact } = contactSlice.actions;
-
 export const selectContact = (state: RootState) => state.contact.value
-
 export default contactSlice.reducer;

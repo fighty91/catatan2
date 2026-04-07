@@ -33,7 +33,7 @@ export const getContactsFromAPI = () => {
         const data = snapshot.val();
 
         if(!data) {
-          dispatch(setContact({ value: [] }));
+          dispatch(setContact([]));
           return resolve([]);
         }
 
@@ -46,7 +46,7 @@ export const getContactsFromAPI = () => {
         const collator = new Intl.Collator('de');
         contacts.sort((a, b) => collator.compare(a.name, b.name));
 
-        dispatch(setContact({ value: contacts }));
+        dispatch(setContact(contacts));
         resolve(contacts);
       })
     })
