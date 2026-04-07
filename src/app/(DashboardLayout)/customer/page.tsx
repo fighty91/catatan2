@@ -23,7 +23,6 @@ const Customer = () => {
     fetchContacts();
   }, [dispatch]);
 
-
   return (
     <PageContainer title="Customer Page" description="this is Customer page">
       <DashboardCard title="Customer">
