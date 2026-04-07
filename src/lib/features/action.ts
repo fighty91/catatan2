@@ -1,6 +1,6 @@
 // import { child, DataSnapshot, get, getDatabase, onValue, ref } from "firebase/database";
 import { DataSnapshot, onValue, ref } from "firebase/database";
-import database from "@/config/database";
+import database from "@/lib/database";
 import { setContact } from "./contact/contactSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 // import { useAppDispatch } from "../hooks";
@@ -23,24 +23,6 @@ const serviceApp = 'accountingProfit';
 //         }
 //       })
 //       .catch((error) => console.error(error));
-//   });
-// };
-
-// export const getContactsFromAPI = () => (dispatch) => {
-//   return new Promise((resolve) => {
-//     const starCountRef = ref(database, `${serviceApp}/contacts`);
-//     onValue(starCountRef, (snapshot) => {
-//       let temp = { ...snapshot.val() },
-//         contacts = [];
-//       for (let x in temp) {
-//         temp[x].id = x;
-//         contacts.push(temp[x]);
-//       }
-//       contacts.sort((a, b) => new Intl.Collator('de').compare(a.name, b.name));
-//       // contacts.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-//       dispatch(setContact({ value: contacts }));
-//       resolve(contacts);
-//     });
 //   });
 // };
 
