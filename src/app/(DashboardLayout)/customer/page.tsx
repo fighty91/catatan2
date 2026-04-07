@@ -7,16 +7,16 @@ import { getContactsFromAPI } from '@/lib/features/contact/action';
 import { useEffect, useState } from 'react';
 
 const Customer = () => {
-  const dispatch = useAppDispatch()
+  // const dispatch = useAppDispatch()
 
-  useEffect(() => {
+  // useEffect(() => {
     // (async () => {
     //   const contacts = await dispatch(getContactsFromAPI());
     //   console.log(contacts);
       
     // })();
 
-  }, []);
+  // }, []);
 
 
   return (
