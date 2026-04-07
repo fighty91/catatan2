@@ -3,20 +3,25 @@ import { Typography } from '@mui/material';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
 import { useAppDispatch } from '@/lib/hooks';
+import { useEffect } from 'react';
 import { getContactsFromAPI } from '@/lib/features/contact/action';
-import { useEffect, useState } from 'react';
 
 const Customer = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    // (async () => {
-    //   const contacts = await dispatch(getContactsFromAPI());
-    //   console.log(contacts);
-      
-    // })();
-    console.log('test');
-  }, []);
+    const fetchContacts = async () => {
+      try {
+        // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
+        const contacts = await dispatch(getContactsFromAPI());
+        console.log("Data kontak diterima:", contacts);
+      } catch (error) {
+        console.error("Gagal mengambil kontak:", error);
+      }
+    }
+
+    fetchContacts();
+  }, [dispatch]);
 
 
   return (
