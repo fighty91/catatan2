@@ -22,20 +22,43 @@ const serviceApp = 'accountingProfit';
 //   });
 // };
 
-export const getContactsFromAPI = () => (dispatch) => {
-  return new Promise((resolve) => {
-    const starCountRef = ref(database, `${serviceApp}/contacts`);
-    onValue(starCountRef, (snapshot) => {
-      let temp = { ...snapshot.val() },
-        contacts = [];
-      for (let x in temp) {
-        temp[x].id = x;
-        contacts.push(temp[x]);
-      }
-      contacts.sort((a, b) => new Intl.Collator('de').compare(a.name, b.name));
-      // contacts.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-      dispatch(setContact({ value: contacts }));
-      resolve(contacts);
+// export const getContactsFromAPI = () => (dispatch) => {
+//   return new Promise((resolve) => {
+//     const starCountRef = ref(database, `${serviceApp}/contacts`);
+//     onValue(starCountRef, (snapshot) => {
+//       let temp = { ...snapshot.val() },
+//         contacts = [];
+//       for (let x in temp) {
+//         temp[x].id = x;
+//         contacts.push(temp[x]);
+//       }
+//       contacts.sort((a, b) => new Intl.Collator('de').compare(a.name, b.name));
+//       // contacts.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+//       dispatch(setContact({ value: contacts }));
+//       resolve(contacts);
+//     });
+//   });
+// };
+
+
+export const getContactsFromAPI = () => {
+  return function(dispatch) {
+    return new Promise((resolve) => {
+      const starCountRef = ref(database, `${serviceApp}/contacts`);
+      onValue(starCountRef, (snapshot) => {
+        let temp = { ...snapshot.val() },
+          contacts = [];
+        for (let x in temp) {
+          temp[x].id = x;
+          contacts.push(temp[x]);
+        }
+        contacts.sort((a, b) => new Intl.Collator('de').compare(a.name, b.name));
+        // contacts.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+        dispatch(setContact({ value: contacts }));
+        resolve(contacts);
+      });
     });
-  });
-};
+    
+  };
+}
+
