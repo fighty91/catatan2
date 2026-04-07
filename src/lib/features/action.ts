@@ -1,28 +1,26 @@
-import { child, get, getDatabase, onValue, ref } from "firebase/database";
+// import { child, get, getDatabase, onValue, ref } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 import database from "@/config/database";
 import { setContact } from "./contact/contactSlice";
-// import { useAppDispatch } from "../hooks";
-// const dispatch = useAppDispatch();
-
 const serviceApp = 'accountingProfit';
 
-export const getContactFromAPI = (id) => () => {
-  // get once
-  return new Promise((resolve) => {
-    const dbRef = ref(getDatabase());
-    get(child(dbRef, `accountingProfit/contacts/${id}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const temp = { ...snapshot.val(), id };
-          resolve(temp);
-        } else {
-          resolve(snapshot.val());
-          console.log('No contact available');
-        }
-      })
-      .catch((error) => console.error(error));
-  });
-};
+// export const getContactFromAPI = (id) => () => {
+//   // get once
+//   return new Promise((resolve) => {
+//     const dbRef = ref(getDatabase());
+//     get(child(dbRef, `accountingProfit/contacts/${id}`))
+//       .then((snapshot) => {
+//         if (snapshot.exists()) {
+//           const temp = { ...snapshot.val(), id };
+//           resolve(temp);
+//         } else {
+//           resolve(snapshot.val());
+//           console.log('No contact available');
+//         }
+//       })
+//       .catch((error) => console.error(error));
+//   });
+// };
 
 export const getContactsFromAPI = () => (dispatch) => {
   return new Promise((resolve) => {
