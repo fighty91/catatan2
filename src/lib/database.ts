@@ -1,36 +1,34 @@
+// import { initializeApp } from "firebase/app";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from "firebase/database";
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
-// import 'firebase/auth'
-
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAw44qqW7sGx8WJSp2fo3JSoHVfOQkgb80",
-  authDomain: "yadupa-accounting-jayapura.firebaseapp.com",
-  databaseURL: "https://yadupa-accounting-jayapura-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "yadupa-accounting-jayapura",
-  storageBucket: "yadupa-accounting-jayapura.appspot.com",
-  messagingSenderId: "564250972361",
-  appId: "1:564250972361:web:b13a27ca292cf20f3fbd18",
-  measurementId: "G-8WWCNEHHJY"
-}
-
-// Initialize Firebase
-// const firebase = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(firebase);
+  apiKey: "AIzaSyA1-mO_qeR2BruRoopNuCYkD10SqxtZif8",
+  authDomain: "admin-template-1-3e4db.firebaseapp.com",
+  databaseURL: "https://admin-template-1-3e4db-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "admin-template-1-3e4db",
+  storageBucket: "admin-template-1-3e4db.firebasestorage.app",
+  messagingSenderId: "499419712502",
+  appId: "1:499419712502:web:add547c3fb00fc062e15d7",
+  measurementId: "G-N0T84BXKPR"
+};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
+
+
 
 
 
