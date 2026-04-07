@@ -8,14 +8,14 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyA1-mO_qeR2BruRoopNuCYkD10SqxtZif8",
-  authDomain: "admin-template-1-3e4db.firebaseapp.com",
-  databaseURL: "https://admin-template-1-3e4db-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "admin-template-1-3e4db",
-  storageBucket: "admin-template-1-3e4db.firebasestorage.app",
-  messagingSenderId: "499419712502",
-  appId: "1:499419712502:web:add547c3fb00fc062e15d7",
-  measurementId: "G-N0T84BXKPR"
+  apiKey: "AIzaSyCpKWMFwamlbtgf7LZiCqb3MBb-n92KqZ4",
+  authDomain: "lelystore-1704.firebaseapp.com",
+  databaseURL: "https://lelystore-1704-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "lelystore-1704",
+  storageBucket: "lelystore-1704.firebasestorage.app",
+  messagingSenderId: "309809433378",
+  appId: "1:309809433378:web:c4b047eee6d698ea8ff37b",
+  measurementId: "G-QJ98YDFQ38"
 };
 
 // Initialize Firebase
