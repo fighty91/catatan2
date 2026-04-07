@@ -1,3 +1,9 @@
 *{
      font-family: 'Plus Jakarta Sans', Helvetica, Arial, sans-serif !important;
 }
+a.phone {
+  text-decoration: none;
+}
+a.phone:hover{
+  text-decoration: underline;
+}

@@ -5,6 +5,7 @@ import {
   IconLogin,
   IconMoodHappy,
   IconTypography,
+  IconUserDollar,
   IconUserPlus,
 } from "@tabler/icons-react";
 
@@ -29,8 +30,14 @@ const Menuitems = [
   {
     id: uniqueId(),
     title: "Customer",
-    icon: IconTypography,
+    icon: IconUserDollar,
     href: "/customer",
+  },
+  {
+    id: uniqueId(),
+    title: "Customer2",
+    icon: IconUserDollar,
+    href: "/customer2",
   },
   {
     navlabel: true,

@@ -1,5 +1,5 @@
 'use client';
-import { Typography } from '@mui/material';
+import { Divider, Link, Typography } from '@mui/material';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -34,7 +34,42 @@ const Customer = () => {
   return (
     <PageContainer title="Customer Page" description="this is Customer page">
       <DashboardCard title="Customer">
-        <Typography>This is a customer page</Typography>
+
+        <Typography variant="h6" gutterBottom>
+          Fighty
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Browse and search for icons directly on the{' '}
+          <Link
+            href="https://tabler-icons.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            color="primary"
+          >
+            Tabler Icons website
+          </Link>.
+        </Typography>
+
+        <Divider sx={{ my: 3 }} />
+
+        <Typography variant="h6" gutterBottom>
+          Lely
+        </Typography>
+        <Typography variant="body1" gutterBottom>
+          Browse and search for icons directly on the{' '}
+          <Link
+            href="https://tabler-icons.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            color="primary"
+          >
+            Tabler Icons website
+          </Link>.
+        </Typography>
+
+        <Divider sx={{ my: 3 }} />
       </DashboardCard>
     </PageContainer>
   );
