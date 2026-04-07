@@ -9,22 +9,25 @@ import { getContactsFromAPI } from '@/lib/features/contact/action';
 const Customer = () => {
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
-        const contacts = await dispatch(getContactsFromAPI());
-        console.log("Data kontak diterima:", contacts);
-      } catch (error) {
-        console.error("Gagal mengambil kontak:", error);
-      }
+  const fetchContacts = async () => {
+    try {
+      // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
+      const contacts = await dispatch(getContactsFromAPI());
+      console.log("Data kontak diterima:", contacts);
+    } catch (error) {
+      console.error("Gagal mengambil kontak:", error);
     }
-
-    fetchContacts();
-  }, [dispatch]);
-
+  }
+  
   const contact = useAppSelector(state => state.contact.value);
+  
+  // useEffect(() => {
+  // }, [dispatch]);
+  
   useEffect(() => {
+    if (contact.length < 1) {
+      fetchContacts();
+    }
     console.log(contact);
   }, [contact])
 
