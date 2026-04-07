@@ -1,14 +1,15 @@
 'use client';
-import { Divider, Link, Typography } from '@mui/material';
+import { Button, Card, CardActionArea, CardActions, CardContent, Divider, Grid, Link, Stack, Typography } from '@mui/material';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import DashboardCard from '@/app/(DashboardLayout)/components/shared/DashboardCard';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useEffect } from 'react';
 import { getContactsFromAPI } from '@/lib/features/contact/action';
+import { IconCirclePlus } from '@tabler/icons-react';
 
 const Customer = () => {
   const dispatch = useAppDispatch()
-
+  const contacts = useAppSelector(state => state.contact.value);
+  
   const fetchContacts = async () => {
     try {
       // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
@@ -19,61 +20,76 @@ const Customer = () => {
     }
   }
   
-  const contact = useAppSelector(state => state.contact.value);
-  
-  // useEffect(() => {
-  // }, [dispatch]);
-  
   useEffect(() => {
-    if (contact.length < 1) {
+    if (contacts.length < 1) {
       fetchContacts();
     }
-    console.log(contact);
-  }, [contact])
+    console.log(contacts);
+  }, [contacts])
 
   return (
     <PageContainer title="Customer Page" description="this is Customer page">
-      <DashboardCard title="Customer">
+      <Grid
+        container
+        direction="row"
+        spacing={2}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Grid size={{ sm: 6, md: 10 }}>
+          <Stack direction="row" spacing={0} alignItems="center">
+            <Typography variant="h3" color="#616161">
+              Customer
+            </Typography>
+          </Stack>
+        </Grid>
+        {/* BUTTON CREATE */}
+        <Grid >
+          <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
+            {/* <Button variant="contained" sx={{ width: 100 }} component={Link} to="create"> */}
+            <Button>
+              add customer &nbsp;<IconCirclePlus width="20" height="20" />
+            </Button>
+          </Stack>
+        </Grid>
+      </Grid>
+      <br />
+      <br />
 
-        <Typography variant="h6" gutterBottom>
-          Fighty
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Browse and search for icons directly on the{' '}
-          <Link
-            href="https://tabler-icons.io/"
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            color="primary"
-          >
-            Tabler Icons website
-          </Link>.
-        </Typography>
-
-        <Divider sx={{ my: 3 }} />
-
-        <Typography variant="h6" gutterBottom>
-          Lely
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Browse and search for icons directly on the{' '}
-          <Link
-            href="https://tabler-icons.io/"
-            target="_blank"
-            rel="noopener noreferrer"
-            underline="hover"
-            color="primary"
-          >
-            Tabler Icons website
-          </Link>.
-        </Typography>
-
-        <Divider sx={{ my: 3 }} />
-      </DashboardCard>
+      <Grid container spacing={3}>
+        {contacts.map((contact, index) => (
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 4}}>
+            <Card variant="outlined">
+              <CardActionArea>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {contact.name}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }} gutterBottom>
+                    {contact.address}
+                  </Typography>
+                  <Typography
+                    className='phone'
+                    component="a"
+                    variant="body2"
+                    gutterBottom
+                    href={`https://wa.me/62${Number(contact.phone)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="primary"
+                  >
+                    {contact.phone}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </PageContainer>
   );
 };
 
 export default Customer;
-

@@ -8,7 +8,8 @@ import { IconCirclePlus } from '@tabler/icons-react';
 
 const Customer = () => {
   const dispatch = useAppDispatch()
-
+  const contacts = useAppSelector(state => state.contact.value);
+  
   const fetchContacts = async () => {
     try {
       // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
@@ -18,8 +19,6 @@ const Customer = () => {
       console.error("Gagal mengambil kontak:", error);
     }
   }
-  
-  const contacts = useAppSelector(state => state.contact.value);
   
   useEffect(() => {
     if (contacts.length < 1) {
@@ -94,4 +93,3 @@ const Customer = () => {
 };
 
 export default Customer;
-
