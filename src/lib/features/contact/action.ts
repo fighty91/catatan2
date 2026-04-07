@@ -1,10 +1,9 @@
 // import { child, DataSnapshot, get, getDatabase, onValue, ref } from "firebase/database";
 import { DataSnapshot, onValue, ref } from "firebase/database";
 import database from "@/lib/database";
-import { setContact } from "./contact/contactSlice";
+import { setContact } from "./contactSlice";
 import { Dispatch } from "@reduxjs/toolkit";
-// import { useAppDispatch } from "../hooks";
-// const dispatch = useAppDispatch();
+import { Contact } from "../type";
 
 const serviceApp = 'accountingProfit';
 
@@ -27,12 +26,11 @@ const serviceApp = 'accountingProfit';
 // };
 
 // types.ts (atau letakkan di file yang sama)
-export interface Contact {
-  id: string;
-  name: string;
-  [key: string]: any; // Untuk properti tambahan lainnya
-}
-
+// export interface Contact {
+//   id: string;
+//   name: string;
+//   [key: string]: any; // Untuk properti tambahan lainnya
+// }
 
 export const getContactsFromAPI = () => {
   return (dispatch: Dispatch): Promise<Contact[]> => {
