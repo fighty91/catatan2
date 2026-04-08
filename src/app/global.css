@@ -1,9 +1,9 @@
 *{
      font-family: 'Plus Jakarta Sans', Helvetica, Arial, sans-serif !important;
 }
-a.phone {
+a.clear-link {
   text-decoration: none;
 }
-a.phone:hover{
+a.clear-link:hover {
   text-decoration: underline;
 }
