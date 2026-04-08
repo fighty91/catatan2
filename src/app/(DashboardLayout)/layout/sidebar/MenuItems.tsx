@@ -34,12 +34,12 @@ const Menuitems = [
     icon: IconUserDollar,
     href: "/customer",
   },
-  {
-    id: uniqueId(),
-    title: "Customer2",
-    icon: IconUserDollar,
-    href: "/customer2",
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: "Customer2",
+  //   icon: IconUserDollar,
+  //   href: "/customer2",
+  // },
   {
     id: uniqueId(),
     title: "Product",
