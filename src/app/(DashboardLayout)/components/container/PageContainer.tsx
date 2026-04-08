@@ -11,10 +11,8 @@ type Props = {
 const PageContainer = ({ title, description, children }: Props) => (
 
   <div>
-
     <title>{title}</title>
     <meta name="description" content={description} />
-
     {children}
   </div>
 
