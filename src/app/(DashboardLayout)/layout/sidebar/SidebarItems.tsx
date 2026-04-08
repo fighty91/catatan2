@@ -52,17 +52,53 @@ const renderMenuItems = (items: any, pathDirect: any) => {
       <Box px={3} key={item.id}>
         <MenuItem
           key={item.id}
-          isSelected={pathDirect === item?.href}
+          isSelected={
+            item.href === "/" ?
+            pathDirect === item?.href :
+            pathDirect.includes(item.href)
+          }
           borderRadius='8px'
           icon={itemIcon}
           link={item.href}
           component={Link}
-        >
+          >
           {item.title}
         </MenuItem >
       </Box>
-
     );
+    
+    // if (item.href === "/") {
+    //   return (
+    //     <Box px={3} key={item.id}>
+    //       <MenuItem
+    //         key={item.id}
+    //         isSelected={pathDirect === item?.href}
+    //         borderRadius='8px'
+    //         icon={itemIcon}
+    //         link={item.href}
+    //         component={Link}
+    //       >
+    //         {item.title}
+    //       </MenuItem >
+    //     </Box>
+    //   );
+    // } else {
+    //   return (
+    //     <Box px={3} key={item.id}>
+    //       <MenuItem
+    //         key={item.id}
+    //         // isSelected={pathDirect === item?.href}
+    //         isSelected={pathDirect.includes(item.href)}
+    //         borderRadius='8px'
+    //         icon={itemIcon}
+    //         link={item.href}
+    //         component={Link}
+    //       >
+    //         {item.title}
+    //       </MenuItem >
+    //     </Box>
+    //   );
+    // }
   });
 };
 

@@ -1,0 +1,6 @@
+a.clear-link {
+  text-decoration: none;
+}
+a.clear-link:hover {
+  text-decoration: underline;
+}

@@ -7,6 +7,7 @@ import { getContactsFromAPI } from '@/lib/features/contact/action';
 import { IconCirclePlus } from '@tabler/icons-react';
 import { MoreVert } from '@mui/icons-material';
 import Link from 'next/link';
+import './customer.css'
 
 const Customer = () => {
   const dispatch = useAppDispatch()
@@ -70,7 +71,7 @@ const Customer = () => {
                     <Typography
                       className="clear-link"
                       component={Link}
-                      href="/"
+                      href={`customer/list/${contact.id}`}
                       variant="h5"
                       gutterBottom
                       color="text.primary"
