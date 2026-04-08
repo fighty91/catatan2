@@ -1,10 +1,12 @@
 'use client';
-import { Button, Card, CardActionArea, CardActions, CardContent, Divider, Grid, Link, Stack, Typography } from '@mui/material';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Divider, Grid, IconButton, Stack, Typography } from '@mui/material';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useEffect } from 'react';
 import { getContactsFromAPI } from '@/lib/features/contact/action';
 import { IconCirclePlus } from '@tabler/icons-react';
+import { MoreVert } from '@mui/icons-material';
+import Link from 'next/link';
 
 const Customer = () => {
   const dispatch = useAppDispatch()
@@ -59,19 +61,31 @@ const Customer = () => {
       <br />
 
       <Grid container spacing={3}>
-        {contacts.map((contact, index) => (
-          <Grid key={index} size={{ xs: 12, sm: 6, md: 4}}>
+        {contacts.map((contact) => (
+          <Grid key={contact.id} size={{ xs: 12, sm: 6, md: 4}}>
             <Card variant="outlined">
-              <CardActionArea>
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {contact.name}
-                  </Typography>
+              {/* <CardActionArea> */}
+                <CardContent sx={{ pr: 1 }}>
+                  <Stack direction="row" sx={{ justifyContent: "space-between", alignItems: "end", }}>
+                    <Typography
+                      className="clear-link"
+                      component={Link}
+                      href="/"
+                      variant="h5"
+                      gutterBottom
+                      color="text.primary"
+                    >
+                      {contact.name}
+                    </Typography>
+                    <IconButton aria-label="settings" sx={{ mr: 0 }}>
+                      <MoreVert />
+                    </IconButton>
+                  </Stack>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }} gutterBottom>
                     {contact.address}
                   </Typography>
                   <Typography
-                    className='phone'
+                    className='clear-link'
                     component="a"
                     variant="body2"
                     gutterBottom
@@ -83,7 +97,7 @@ const Customer = () => {
                     {contact.phone}
                   </Typography>
                 </CardContent>
-              </CardActionArea>
+              {/* </CardActionArea> */}
             </Card>
           </Grid>
         ))}
