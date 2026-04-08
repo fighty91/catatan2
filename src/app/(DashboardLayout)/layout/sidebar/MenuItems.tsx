@@ -1,6 +1,7 @@
 import {
   IconAperture,
   IconCopy,
+  IconFlower,
   IconLayoutDashboard,
   IconLogin,
   IconMoodHappy,
@@ -38,6 +39,12 @@ const Menuitems = [
     title: "Customer2",
     icon: IconUserDollar,
     href: "/customer2",
+  },
+  {
+    id: uniqueId(),
+    title: "Product",
+    icon: IconFlower,
+    href: "/product",
   },
   {
     navlabel: true,
