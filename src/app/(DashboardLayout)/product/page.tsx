@@ -3,31 +3,32 @@ import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, Div
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useEffect } from 'react';
-import { getContactsFromAPI } from '@/lib/features/contact/action';
 import { IconCirclePlus } from '@tabler/icons-react';
 import { MoreVert } from '@mui/icons-material';
 import Link from 'next/link';
+import { getProductsFromAPI } from '@/lib/features/product/action';
 
 const Product = () => {
   const dispatch = useAppDispatch()
-  const contacts = useAppSelector(state => state.contact.value);
+  const products = useAppSelector(state => state.product.value);
   
-  const fetchContacts = async () => {
+  const fetchProducts = async () => {
     try {
       // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
-      const contacts = await dispatch(getContactsFromAPI());
-      console.log("Data kontak diterima:", contacts);
+      // await dispatch(getProductsFromAPI());
+      const products = await dispatch(getProductsFromAPI());
+      console.log("Data produk diterima:", products);
     } catch (error) {
-      console.error("Gagal mengambil kontak:", error);
+      console.error("Gagal mengambil produk:", error);
     }
   }
   
   useEffect(() => {
-    if (contacts.length < 1) {
-      fetchContacts();
+    if (products.length < 1) {
+      fetchProducts();
     }
-    console.log(contacts);
-  }, [contacts])
+    console.log(products);
+  }, [products])
 
   return (
     <PageContainer title="Product Page" description="this is Product page">
@@ -61,8 +62,8 @@ const Product = () => {
       <br />
 
       <Grid container spacing={3}>
-        {contacts.map((contact) => (
-          <Grid key={contact.id} size={{ xs: 12, sm: 6, md: 4}}>
+        {products.map((product) => (
+          <Grid key={product.id} size={{ xs: 12, sm: 6, md: 4}}>
             <Card variant="outlined">
               {/* <CardActionArea> */}
                 <CardContent sx={{ pr: 1 }}>
@@ -70,31 +71,22 @@ const Product = () => {
                     <Typography
                       className="clear-link"
                       component={Link}
-                      href="/"
+                      href={`/product/${product.id}`}
                       variant="h5"
                       gutterBottom
                       color="text.primary"
                     >
-                      {contact.name}
+                      {product.name}
                     </Typography>
                     <IconButton aria-label="settings" sx={{ mr: 0 }}>
                       <MoreVert />
                     </IconButton>
                   </Stack>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }} gutterBottom>
-                    {contact.address}
+                    {product.sellPrice}
                   </Typography>
-                  <Typography
-                    className='clear-link'
-                    component="a"
-                    variant="body2"
-                    gutterBottom
-                    href={`https://wa.me/62${Number(contact.phone)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    color="primary"
-                  >
-                    {contact.phone}
+                  <Typography>
+                    {product.uId}
                   </Typography>
                 </CardContent>
               {/* </CardActionArea> */}

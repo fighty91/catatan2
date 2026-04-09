@@ -102,7 +102,6 @@ const renderMenuItems = (items: any, pathDirect: any) => {
   });
 };
 
-
 const SidebarItems = () => {
   const pathname = usePathname();
   const pathDirect = pathname;
@@ -118,8 +117,8 @@ const SidebarItems = () => {
           <Upgrade />
         </Box>
       </MUI_Sidebar>
-
     </>
   );
 };
+
 export default SidebarItems;

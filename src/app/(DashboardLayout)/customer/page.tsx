@@ -71,7 +71,7 @@ const Customer = () => {
                     <Typography
                       className="clear-link"
                       component={Link}
-                      href={`customer/list/${contact.id}`}
+                      href={`customer/data/${contact.id}`}
                       variant="h5"
                       gutterBottom
                       color="text.primary"
