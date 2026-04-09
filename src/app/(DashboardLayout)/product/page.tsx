@@ -71,7 +71,7 @@ const Product = () => {
                     <Typography
                       className="clear-link"
                       component={Link}
-                      href={`/product/${product.id}`}
+                      href={`/product/data/${product.id}`}
                       variant="h5"
                       gutterBottom
                       color="text.primary"

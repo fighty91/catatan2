@@ -107,7 +107,7 @@ const SidebarItems = () => {
   const pathDirect = pathname;
 
   return (
-    < >
+    <>
       <MUI_Sidebar width={"100%"} showProfile={false} themeColor={"#5D87FF"} themeSecondaryColor={'#49beff'} >
 
         <Logo img='/images/logos/dark-logo.svg' component={Link} to="/" >Modernize</Logo>
