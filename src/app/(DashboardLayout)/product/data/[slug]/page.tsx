@@ -1,21 +1,41 @@
-// "use client"
+"use client"
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { MoreVert } from "@mui/icons-material";
 import { Button, Card, CardContent, Grid, IconButton, Stack, Typography } from "@mui/material";
-import Link from "next/link";
+import { use } from "react";
+// import Link from "next/link";
 // import { useState } from "react";
-// import { getContactsFromAPI } from "@/lib/features/contact/action";
-// import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-// import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useEffect } from "react";
+import { getProductsFromAPI } from "@/lib/features/product/action";
 
-export default async function ProductData({
+export default function ProductData({
   params
 } : {
   params: Promise<{ slug: string }>
 }) {
-  const { slug } = await params;
+  const { slug } = use(params);
 
-  // const [temp, setTemp] = useState('');
+  const dispatch = useAppDispatch();
+    const products = useAppSelector(state => state.contact.value);
+  
+    const fetchProducts = async () => {
+      try {
+        // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
+        await dispatch(getProductsFromAPI());
+        // const products = await dispatch(getProductsFromAPI());
+        // console.log("Data kontak diterima:", products);
+      } catch (error) {
+        console.error("Gagal mengambil kontak:", error);
+      }
+    }
+    
+    useEffect(() => {
+      if (products.length < 1) {
+        fetchProducts();
+      }
+      console.log(products);
+    }, [products])
   
 
   return (

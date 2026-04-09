@@ -1,39 +1,68 @@
-// app/blog/[slug]/page.js
-
+"use client";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { MoreVert } from "@mui/icons-material";
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Stack, Typography } from "@mui/material";
-import Link from "next/link";
-// import { getContactsFromAPI } from "@/lib/features/contact/action";
-// import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-// import { useEffect } from "react";
+import { use, useState, useEffect } from "react";
+import { getContactsFromAPI } from "@/lib/features/contact/action";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
-export default async function CustomerData({
+export default function CustomerData({
   params
-} : {
+}: {
   params: Promise<{ slug: string }>
 }) {
-  const { slug } = await params;
-
-  // const dispatch = useAppDispatch();
-  // const contacts = useAppSelector(state => state.contact.value);
-
-  // const fetchContacts = async () => {
-  //   try {
-  //     // Redux Toolkit dispatch akan mengembalikan promise dari Thunk
-  //     const contacts = await dispatch(getContactsFromAPI());
-  //     console.log("Data kontak diterima:", contacts);
-  //   } catch (error) {
-  //     console.error("Gagal mengambil kontak:", error);
-  //   }
-  // }
+  // 1. Unwrap params dengan use()
+  const { slug } = use(params);
+  const dispatch = useAppDispatch();
   
-  // useEffect(() => {
-  //   if (contacts.length < 1) {
-  //     fetchContacts();
-  //   }
-  //   console.log(contacts);
-  // }, [contacts])
+  // 2. Ambil data dari Redux
+  const contacts = useAppSelector(state => state.contact.value);
+  
+  interface Position {
+    [key: string]: boolean;
+  }
+
+  interface DefaultAccount {
+    [key: string]: string;
+  }
+
+  // Berikan tipe data yang jelas pada state (sesuaikan dengan interface Contact kamu)
+  const [contact, setContact] = useState<any>(null);
+  const [position, setPosition] = useState<Position>({});
+  const [defaultAccount, setDefaultAccount] = useState<DefaultAccount>({});
+
+  useEffect(() => {
+    const fetchAndFindContact = async () => {
+      // 3. Jika data di Redux kosong, ambil dari API dulu
+      if (contacts.length === 0) {
+        try {
+          await dispatch(getContactsFromAPI()); // Gunakan .unwrap() untuk handle error thunk
+        } catch (error) {
+          console.error("Gagal mengambil kontak:", error);
+        }
+      } else {
+        // 4. Cari kontak berdasarkan slug/id
+        // Gunakan == atau Number() jika ID di redux adalah angka tapi slug adalah string
+        const found = contacts.find((item: any) => String(item.id) === slug);
+        setContact(found);
+      }
+    };
+
+    fetchAndFindContact();
+  }, [contacts, slug, dispatch]); // Masukkan slug dan dispatch ke dependency array
+
+  useEffect(() => {
+    if (contact) {
+      const newPosition = contact.position;
+      setPosition(newPosition);
+      setDefaultAccount(contact.defaultAccount);
+    }
+  }, [contact]);
+
+  // 5. Render Loading jika data belum ada
+  if (!contact) {
+    return <Typography>Loading data untuk ID: {slug}...</Typography>;
+  }
 
   return (
     <PageContainer title="Customer Data" description="this is Customer page">
@@ -49,14 +78,14 @@ export default async function CustomerData({
         <Grid size={{ sm: 6, md: 10 }}>
           <Stack direction="row" spacing={0} alignItems="center">
             <Typography variant="h3" color="#616161">
-              Fighty Elia Ratag
+              {contact.name}
             </Typography>
           </Stack>
         </Grid>
         {/* BUTTON CREATE */}
         <Grid >
           <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
-            {/* <Button variant="contained" sx={{ width: 100 }} component={Link} to="create"> */}
+            {/* <Button variant="contained" sx={{ width: 100 }}> */}
             <Button>
               action
             </Button>
@@ -70,7 +99,7 @@ export default async function CustomerData({
           <Card variant="outlined">
             <CardHeader
               title="Biodata"
-              sx={{ pr: 1, pb: 0 }}
+              sx={{ pr: 1, pb: 0, height: '64px' }}
               action={(
                 <CardActions>
                   <IconButton aria-label="settings">
@@ -81,16 +110,13 @@ export default async function CustomerData({
             />
             <CardContent sx={{ pt: 1 }}>
               <Typography gutterBottom>
-                Id: {slug}
+                Name: {contact.name}
               </Typography>
               <Typography gutterBottom>
-                Name: Fighty Elia Ratag
+                Address: {contact.address || '-'}
               </Typography>
               <Typography gutterBottom>
-                Address: Jalan Protokol Koya Barat
-              </Typography>
-              <Typography gutterBottom>
-                NPWP: 9171040909910002
+                NPWP: {contact.npwp || '-'}
               </Typography>
               <Stack direction="row">
                 <Typography gutterBottom>
@@ -105,7 +131,7 @@ export default async function CustomerData({
                   rel="noopener noreferrer"
                   color="primary"
                 >
-                  082231110632
+                  {contact.phone || '-'}
                 </Typography>
               </Stack>
               <Stack direction="row">
@@ -121,11 +147,11 @@ export default async function CustomerData({
                   rel="noopener noreferrer"
                   color="primary"
                 >
-                  082231110632
+                  {contact.phone2 || '-'}
                 </Typography>
               </Stack>
               <Typography gutterBottom>
-                Active: true
+                Active: {String(contact.isActive)}
               </Typography>
             </CardContent>
           </Card>
@@ -135,7 +161,7 @@ export default async function CustomerData({
           <Card variant="outlined" sx={{ height: "100%" }}>
             <CardHeader
               title="Position"
-              sx={{ pr: 1, pb: 0 }}
+              sx={{ pr: 1, pb: 0, height: '64px' }}
               action={(
                 <CardActions>
                   <IconButton aria-label="settings">
@@ -146,19 +172,16 @@ export default async function CustomerData({
             />
             <CardContent sx={{ pt: 1 }}>
               <Typography gutterBottom>
-                Customer: true
+                Customer: {String(position.customer)}
               </Typography>
               <Typography gutterBottom>
-                Supplier: true
+                Supplier: {String(position.supplier)}
               </Typography>
               <Typography gutterBottom>
-                Vendor: true
+                Employee: {String(position.employee)}
               </Typography>
               <Typography gutterBottom>
-                Employ: true
-              </Typography>
-              <Typography gutterBottom>
-                Other: true
+                Other: {String(position.other)}
               </Typography>
             </CardContent>
           </Card>
@@ -168,24 +191,24 @@ export default async function CustomerData({
           <Card variant="outlined" sx={{ height: "100%" }}>
             <CardHeader
               title="Default Account"
-              sx={{ pr: 1, pb: 0 }}
-              action={(
-                <CardActions>
-                  <IconButton aria-label="settings">
-                    <MoreVert />
-                  </IconButton>
-                </CardActions>
-              )}
+              sx={{ pr: 1, pb: 0, height: '64px' }}
+              // action={(
+              //   <CardActions>
+              //     <IconButton aria-label="settings">
+              //       <MoreVert />
+              //     </IconButton>
+              //   </CardActions>
+              // )}
             />
             <CardContent sx={{ pt: 1 }}>
               <Typography gutterBottom>
-                Account Payable: Hutang Usaha
+                Account Payable: {defaultAccount.accountPayable}
               </Typography>
               <Typography gutterBottom>
-                Account Receivable: Piutang Usaha
+                Account Receivable: {defaultAccount.accountReceivable}
               </Typography>
               <Typography gutterBottom>
-                Expense Payable: Hutang Usaha
+                Expense Payable: {defaultAccount.expensePayable}
               </Typography>
             </CardContent>
           </Card>
