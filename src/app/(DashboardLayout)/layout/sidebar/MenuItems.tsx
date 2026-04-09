@@ -52,6 +52,18 @@ const Menuitems = [
   },
   {
     id: uniqueId(),
+    title: "Product Unit",
+    icon: IconTypography,
+    href: "/utilities/product-size",
+  },
+  {
+    id: uniqueId(),
+    title: "Product Size",
+    icon: IconTypography,
+    href: "/utilities/product-unit",
+  },
+  {
+    id: uniqueId(),
     title: "Typography",
     icon: IconTypography,
     href: "/utilities/typography",
@@ -98,5 +110,3 @@ const Menuitems = [
 ];
 
 export default Menuitems;
-
-
