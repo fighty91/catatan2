@@ -42,17 +42,15 @@ const Product = () => {
         }}
       >
         <Grid size={{ sm: 6, md: 10 }}>
-          <Stack direction="row" spacing={0} alignItems="center">
-            <Typography variant="h3" color="#616161">
-              Product
-            </Typography>
-          </Stack>
+          <Typography variant="h3" color="#616161">
+            Product
+          </Typography>
         </Grid>
         {/* BUTTON CREATE */}
         <Grid >
           <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
             {/* <Button variant="contained" sx={{ width: 100 }} component={Link} to="create"> */}
-            <Button>
+            <Button variant="text">
               add product &nbsp;<IconCirclePlus width="20" height="20" />
             </Button>
           </Stack>

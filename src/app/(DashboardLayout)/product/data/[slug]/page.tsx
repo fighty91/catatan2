@@ -60,7 +60,7 @@ export default function ProductData({
         <Grid >
           <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
             {/* <Button variant="contained" sx={{ width: 100 }} component={Link} to="create"> */}
-            <Button>
+            <Button variant="text">
               action
             </Button>
           </Stack>

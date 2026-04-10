@@ -5,6 +5,8 @@ import {
   IconLayoutDashboard,
   IconLogin,
   IconMoodHappy,
+  IconRulerMeasure,
+  IconScale,
   IconTypography,
   IconUserDollar,
   IconUserPlus,
@@ -53,13 +55,13 @@ const Menuitems = [
   {
     id: uniqueId(),
     title: "Product Unit",
-    icon: IconTypography,
+    icon: IconScale,
     href: "/utilities/product-size",
   },
   {
     id: uniqueId(),
     title: "Product Size",
-    icon: IconTypography,
+    icon: IconRulerMeasure,
     href: "/utilities/product-unit",
   },
   {

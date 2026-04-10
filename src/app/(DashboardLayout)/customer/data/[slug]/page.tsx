@@ -86,7 +86,7 @@ export default function CustomerData({
         <Grid >
           <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
             {/* <Button variant="contained" sx={{ width: 100 }}> */}
-            <Button>
+            <Button variant="text">
               action
             </Button>
           </Stack>
