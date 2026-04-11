@@ -10,6 +10,7 @@ import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/material.css';
 import './add-customer.css';
 import { PhoneInputComponent } from "./Component";
+import Link from "next/link";
 
 export default function AddCustomer() {
   const dispatch = useAppDispatch();
@@ -25,22 +26,15 @@ export default function AddCustomer() {
   }
 
   // Berikan tipe data yang jelas pada state (sesuaikan dengan interface Contact kamu)
+  const [nameValidation, setNameValidation] = useState<any>(null);
   const [contact, setContact] = useState<any>({
     name: '',
     address: '',
     npwp: '',
     phone: { value: '', country: {} },
-    phone2: { value: '', country: {} }
+    phone2: { value: '', country: {} },
+    position: { customer: true, supplier: false, employee: false, other: false }
   });
-
-  const [position, setPosition] = useState<Position>({
-    customer: true,
-    supplier: false,
-    employee: false,
-    other: false
-  });
-  
-  const [nameValidation, setNameValidation] = useState<any>(null);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -48,7 +42,6 @@ export default function AddCustomer() {
 
     data[name] = value;
     setContact(data)
-    console.log(e)
   }
 
   const handleChangePhone = (value: string, country: object, e: any) => {
@@ -57,15 +50,14 @@ export default function AddCustomer() {
     
     data[name] = { value, country };
     setContact(data);
-    console.log(data);
   }
 
   const handleChangePositon = (e: any) => {
     const { name, checked } = e.target;
-    let data = { ...position };
+    let data = { ...contact };
 
-    data[name] = checked;
-    setPosition(data);
+    data.position[name] = checked;
+    setContact(data);
   }
 
   useEffect(() => {
@@ -90,7 +82,6 @@ export default function AddCustomer() {
         setNameValidation('unavailable') :
         setNameValidation(null);
 
-      // console.log(contact)
   }, [contacts, contact]); // Masukkan contacts dan contact ke dependency array
 
   return (
@@ -115,7 +106,7 @@ export default function AddCustomer() {
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     autoFocus
-                    error={nameValidation ? true : false}
+                    error={nameValidation}
                     helperText={nameValidation}
                     name="name"
                     label="Name"
@@ -129,7 +120,7 @@ export default function AddCustomer() {
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     name="npwp"
-                    label="NPWP"
+                    label="NPWP / NIK"
                     type="text"
                     fullWidth
                     variant="outlined"
@@ -164,26 +155,31 @@ export default function AddCustomer() {
               <FormGroup>
                 <FormControlLabel
                   label="Customer"
-                  control={<Checkbox checked={position.customer} name="customer" disabled required />}
+                  control={<Checkbox checked={contact.position.customer} name="customer" disabled required />}
                 />
                 <FormControlLabel
                   label="Supplier"
-                  control={<Checkbox checked={position.supplier} name="supplier" onChange={handleChangePositon} />}
+                  control={<Checkbox checked={contact.position.supplier} name="supplier" onChange={handleChangePositon} />}
                 />
                 <FormControlLabel
                   label="Employee"
-                  control={<Checkbox checked={position.employee} name="employee" onChange={handleChangePositon} />}
+                  control={<Checkbox checked={contact.position.employee} name="employee" onChange={handleChangePositon} />}
                 />
                 <FormControlLabel
                   label="Other"
-                  control={<Checkbox checked={position.other} name="other" onChange={handleChangePositon} />}
+                  control={<Checkbox checked={contact.position.other} name="other" onChange={handleChangePositon} />}
                 />
               </FormGroup>
             </Grid>
           </Box>
         </Grid>
-        
       </Grid>
+      <Stack direction="row" sx={{ px: 2, pt: 4, justifyContent: "flex-start" }} spacing={1}>
+        <Button variant="contained">Create</Button>
+        <Button variant="contained" color="error" LinkComponent={Link} href="/customer">
+          Cancel
+        </Button>
+      </Stack>
     </PageContainer>
   );
 }

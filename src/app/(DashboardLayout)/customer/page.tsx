@@ -50,7 +50,7 @@ const Customer = () => {
         <Grid >
           <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-end">
             {/* <Button variant="contained" sx={{ width: 100 }} component={Link} to="create"> */}
-            <Button variant="text" component={Link} href="/customer/add">
+            <Button variant="outlined" component={Link} href="/customer/add">
               add customer &nbsp;<IconCirclePlus width="20" height="20" />
             </Button>
           </Stack>
