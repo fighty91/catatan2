@@ -1,7 +1,7 @@
 "use client";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { MoreVert } from "@mui/icons-material";
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, CardHeader, Checkbox, Container, Divider, FormControlLabel, FormGroup, Grid, IconButton, Stack, TextField, Typography } from "@mui/material";
 import { use, useState, useEffect } from "react";
 import { getContactsFromAPI } from "@/lib/features/contact/action";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -9,6 +9,7 @@ import PhoneInput from "react-phone-input-2";
 
 import 'react-phone-input-2/lib/material.css';
 import './add-customer.css';
+import { PhoneInputComponent } from "./Component";
 
 export default function AddCustomer() {
   const dispatch = useAppDispatch();
@@ -28,15 +29,17 @@ export default function AddCustomer() {
     name: '',
     address: '',
     npwp: '',
-    phone: {
-      value: '',
-      country: {}
-    },
-    phone2: {
-      value: '',
-      country: {}
-    }
+    phone: { value: '', country: {} },
+    phone2: { value: '', country: {} }
   });
+
+  const [position, setPosition] = useState<Position>({
+    customer: true,
+    supplier: false,
+    employee: false,
+    other: false
+  });
+  
   const [nameValidation, setNameValidation] = useState<any>(null);
 
   const handleChange = (e: any) => {
@@ -54,6 +57,15 @@ export default function AddCustomer() {
     
     data[name] = { value, country };
     setContact(data);
+    console.log(data);
+  }
+
+  const handleChangePositon = (e: any) => {
+    const { name, checked } = e.target;
+    let data = { ...position };
+
+    data[name] = checked;
+    setPosition(data);
   }
 
   useEffect(() => {
@@ -75,7 +87,7 @@ export default function AddCustomer() {
       // Cari kontak berdasarkan nama
       const found = contacts.find((item: any) => item.name === contact.name);
       found ?
-        setNameValidation('unavilable') :
+        setNameValidation('unavailable') :
         setNameValidation(null);
 
       // console.log(contact)
@@ -83,15 +95,7 @@ export default function AddCustomer() {
 
   return (
     <PageContainer title="Add Customer" description="this is Customer page">
-      <Grid
-        container
-        direction="row"
-        spacing={2}
-        sx={{
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <Grid container direction="row" spacing={2} sx={{ justifyContent: "space-between" }}>
         <Grid size={{ sm: 6, md: 10 }}>
           <Typography variant="h3" color="#616161">
             Add Customer
@@ -101,303 +105,84 @@ export default function AddCustomer() {
       <br />
       <br />
       <Grid container spacing={3}>
-        <Grid
-          container
-          spacing={2}
-          size={{ xs: 12, md: 6 }}
-          sx={{
-            height: "100%",
-            border: "1px solid #6b728021",
-            borderRadius: "8px",
-            px: 2,
-            py: 3
-          }}
-        >
-          <Typography variant="h5" gutterBottom>
-            Biodata
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                autoFocus
-                error={nameValidation ? true : false}
-                helperText={nameValidation}
-                name="name"
-                label="Name"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={contact.name}
-                onChange={handleChange}
-              />
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Box sx={{ height: "100%", border: "1px solid #6b728021", borderRadius: "8px", px: 2, py: 3 }}>
+            <Grid container direction="column" spacing={2}>
+              <Typography variant="h5" gutterBottom>
+                Biodata
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    autoFocus
+                    error={nameValidation ? true : false}
+                    helperText={nameValidation}
+                    name="name"
+                    label="Name"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={contact.name}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    name="npwp"
+                    label="NPWP"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={contact.npwp}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <PhoneInputComponent name="phone" label="Phone" value={contact.phone.value} onValueChange={handleChangePhone} />
+                <PhoneInputComponent name="phone2" label="Phone 2" value={contact.phone2.value} onValueChange={handleChangePhone} />
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    name="address"
+                    label="Address"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={contact.address}
+                    onChange={handleChange}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                name="npwp"
-                label="NPWP"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={contact.npwp}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <PhoneInput
-                value={contact.phone.value}
-                inputProps={{
-                  name: 'phone',
-                  required: true,
-                }}
-                onChange={handleChangePhone}
-                country="id"
-                preferredCountries={["id"]}
-                enableSearch
-                // countryCodeEditable={false}
-                enableAreaCodes
-                specialLabel="Phone"
-                placeholder="Phone"
-                containerStyle={{
-                  width: '100%'
-                }}
-                inputStyle={{
-                  width: '100%',
-                  height: '53px', // atau '40px' untuk small
-                  fontSize: '15px',           // Sedikit mengecilkan font agar kesan "pudar" lebih terasa
-                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                  color: 'rgba(0, 0, 0, 0.7)', // Membuat teks input lebih pudar
-                  // opacity: 0.9                // Alternatif lain untuk memudarkan seluruh elemen input
-                }}
-                buttonStyle={{
-                  position: 'absolute'
-                }}
-                dropdownStyle={{
-                  maxWidth: '270px',
-                  zIndex: 1000
-                }}
-                searchStyle={{
-                  width: '95%',     // Agar search bar di dalam tidak overflow
-                  margin: '10px auto'
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <PhoneInput
-                value={contact.phone2.value}
-                inputProps={{
-                  name: 'phone2',
-                  required: true,
-                }}
-                onChange={handleChangePhone}
-                country="id"
-                preferredCountries={["id"]}
-                enableSearch
-                // countryCodeEditable={false}
-                enableAreaCodes
-                specialLabel="Phone 2"
-                placeholder="Phone 2"
-                containerStyle={{
-                  width: '100%'
-                }}
-                inputStyle={{
-                  width: '100%',
-                  height: '53px', // atau '40px' untuk small
-                  fontSize: '15px',           // Sedikit mengecilkan font agar kesan "pudar" lebih terasa
-                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                  color: 'rgba(0, 0, 0, 0.7)', // Membuat teks input lebih pudar
-                  // opacity: 0.9                // Alternatif lain untuk memudarkan seluruh elemen input
-                }}
-                buttonStyle={{
-                  position: 'absolute'
-                }}
-                dropdownStyle={{
-                  maxWidth: '270px',
-                  zIndex: 1000
-                }}
-                searchStyle={{
-                  width: '95%',     // Agar search bar di dalam tidak overflow
-                  margin: '10px auto'
-                }}
-              />
-            </Grid>
-            
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                name="address"
-                label="Address"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={contact.address}
-                onChange={handleChange}
-              />
-            </Grid>
-          </Grid>
+          </Box>
         </Grid>
-        <Grid
-          container
-          spacing={2}
-          size={{ xs: 12, md: 6 }}
-          sx={{
-            height: "100%",
-            border: "1px solid #6b728021",
-            borderRadius: "8px",
-            px: 2,
-            py: 3
-          }}
-        >
-          <Typography variant="h5" gutterBottom>
-            Position
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                autoFocus
-                error={nameValidation ? true : false}
-                helperText={nameValidation}
-                name="name"
-                label="Name"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={contact.name}
-                onChange={handleChange}
-              />
+
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Box sx={{ height: "100%", border: "1px solid #6b728021", borderRadius: "8px", px: 2, py: 3 }}>
+            <Grid container direction="column" spacing={2}>
+              <Typography variant="h5" gutterBottom>
+                Position
+              </Typography>
+              <FormGroup>
+                <FormControlLabel
+                  label="Customer"
+                  control={<Checkbox checked={position.customer} name="customer" disabled required />}
+                />
+                <FormControlLabel
+                  label="Supplier"
+                  control={<Checkbox checked={position.supplier} name="supplier" onChange={handleChangePositon} />}
+                />
+                <FormControlLabel
+                  label="Employee"
+                  control={<Checkbox checked={position.employee} name="employee" onChange={handleChangePositon} />}
+                />
+                <FormControlLabel
+                  label="Other"
+                  control={<Checkbox checked={position.other} name="other" onChange={handleChangePositon} />}
+                />
+              </FormGroup>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                name="npwp"
-                label="NPWP"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={contact.npwp}
-                onChange={handleChange}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <PhoneInput
-                value={contact.phone.value}
-                inputProps={{
-                  name: 'phone',
-                  required: true,
-                }}
-                onChange={handleChangePhone}
-                country="id"
-                preferredCountries={["id"]}
-                enableSearch
-                // countryCodeEditable={false}
-                enableAreaCodes
-                specialLabel="Phone"
-                placeholder="Phone"
-                containerStyle={{
-                  width: '100%'
-                }}
-                inputStyle={{
-                  width: '100%',
-                  height: '53px', // atau '40px' untuk small
-                  fontSize: '15px',           // Sedikit mengecilkan font agar kesan "pudar" lebih terasa
-                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                  color: 'rgba(0, 0, 0, 0.7)', // Membuat teks input lebih pudar
-                  // opacity: 0.9                // Alternatif lain untuk memudarkan seluruh elemen input
-                }}
-                buttonStyle={{
-                  position: 'absolute'
-                }}
-                dropdownStyle={{
-                  maxWidth: '270px',
-                  zIndex: 1000
-                }}
-                searchStyle={{
-                  width: '95%',     // Agar search bar di dalam tidak overflow
-                  margin: '10px auto'
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <PhoneInput
-                value={contact.phone2.value}
-                inputProps={{
-                  name: 'phone2',
-                  required: true,
-                }}
-                onChange={handleChangePhone}
-                country="id"
-                preferredCountries={["id"]}
-                enableSearch
-                // countryCodeEditable={false}
-                enableAreaCodes
-                specialLabel="Phone 2"
-                placeholder="Phone 2"
-                containerStyle={{
-                  width: '100%'
-                }}
-                inputStyle={{
-                  width: '100%',
-                  height: '53px', // atau '40px' untuk small
-                  fontSize: '15px',           // Sedikit mengecilkan font agar kesan "pudar" lebih terasa
-                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                  color: 'rgba(0, 0, 0, 0.7)', // Membuat teks input lebih pudar
-                  // opacity: 0.9                // Alternatif lain untuk memudarkan seluruh elemen input
-                }}
-                buttonStyle={{
-                  position: 'absolute'
-                }}
-                dropdownStyle={{
-                  maxWidth: '270px',
-                  zIndex: 1000
-                }}
-                searchStyle={{
-                  width: '95%',     // Agar search bar di dalam tidak overflow
-                  margin: '10px auto'
-                }}
-              />
-            </Grid>
-            
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <TextField
-                name="address"
-                label="Address"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={contact.address}
-                onChange={handleChange}
-              />
-            </Grid>
-          </Grid>
+          </Box>
         </Grid>
-      </Grid>
-      <Grid container spacing={3} sx={{ height: "450px"}}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Card variant="outlined" sx={{ height: "100%" }}>
-            <CardHeader
-              title="Position"
-              sx={{ pr: 1, pb: 0, height: '64px' }}
-              action={(
-                <CardActions>
-                  <IconButton aria-label="settings">
-                    <MoreVert />
-                  </IconButton>
-                </CardActions>
-              )}
-            />
-            <CardContent sx={{ pt: 1 }}>
-              <Typography gutterBottom>
-                Customer: ...
-              </Typography>
-              <Typography gutterBottom>
-                Supplier: ...
-              </Typography>
-              <Typography gutterBottom>
-                Employee: ...
-              </Typography>
-              <Typography gutterBottom>
-                Other: ...
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
+        
       </Grid>
     </PageContainer>
   );
