@@ -121,34 +121,40 @@ export default function CustomerData({
               <Stack direction="row">
                 <Typography gutterBottom>
                   Phone: &nbsp;
+                  {!contact.phone && "-"}
                 </Typography>
-                <Typography
-                  className='clear-link'
-                  component="a"
-                  gutterBottom
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  color="primary"
-                >
-                  {contact.phone || '-'}
-                </Typography>
+                {contact.phone &&
+                  <Typography
+                    className='clear-link'
+                    component="a"
+                    gutterBottom
+                    href={`https://wa.me/${contact.phone.value}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="primary"
+                  >
+                    {contact.phone.value}
+                  </Typography>
+                }
               </Stack>
               <Stack direction="row">
                 <Typography gutterBottom>
                   Phone 2: &nbsp;
+                  {!contact.phone2 && "-"}
                 </Typography>
-                <Typography
-                  className='clear-link'
-                  component="a"
-                  gutterBottom
-                  href="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  color="primary"
-                >
-                  {contact.phone2 || '-'}
-                </Typography>
+                {contact.phone2 &&
+                  <Typography
+                    className='clear-link'
+                    component="a"
+                    gutterBottom
+                    href={`https://wa.me/${contact.phone2.value}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="primary"
+                  >
+                    {contact.phone2.value}
+                  </Typography>
+                }
               </Stack>
               <Typography gutterBottom>
                 Active: {String(contact.isActive)}

@@ -15,7 +15,7 @@ export const PhoneInputComponent = ({ name, label, value, onValueChange}: Props)
     <PhoneInput
       value={value}
       inputProps={{
-        name: {name},
+        name,
         required: true,
       }}
       onChange={onValueChange}

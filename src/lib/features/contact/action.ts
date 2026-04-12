@@ -1,11 +1,50 @@
 // import { child, DataSnapshot, get, getDatabase, onValue, ref } from "firebase/database";
-import { DataSnapshot, equalTo, get, limitToFirst, onValue, orderByChild, query, ref } from "firebase/database";
+import { DataSnapshot, equalTo, get, limitToFirst, onValue, orderByChild, push, query, ref, set } from "firebase/database";
 import database from "@/lib/database";
 import { setContact } from "./contactSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 import { Contact } from "../type";
 
 const serviceApp = 'accountingProfit';
+
+export const addContact = async (contactData: Contact) => {
+  try {
+    const contactsRef = ref(database, `${serviceApp}/contacts`);
+    // Ketika Anda memanggil push(), itu sudah membuat ID unik untuk entri baru
+    const newContactRef = push(contactsRef);
+
+    // Dapatkan ID unik ini sebelum menulis data
+    const newContactId = newContactRef.key;
+
+    // Tulis data ke referensi dengan ID baru
+    await set(newContactRef, contactData);
+
+    console.log('Kontak baru berhasil ditambahkan dengan ID:', newContactId);
+    return newContactId; // Mengembalikan ID kontak yang baru saja dibuat
+  } catch (error) {
+    console.error('Gagal menambahkan kontak:', error);
+    return null; // Mengembalikan null atau melempar error jika gagal
+  }
+}
+
+// Contoh penggunaan:
+// const newContact = {
+//   name: 'Jane Doe',
+//   email: 'jane.doe@example.com',
+//   phone: '987-654-3210'
+// };
+
+// (async () => {
+//   const contactId = await addContact(newContact);
+//   if (contactId) {
+//     console.log('ID kontak yang dikembalikan:', contactId);
+//   } else {
+//     console.log('Penambahan kontak gagal.');
+//   }
+// })();
+
+
+
 
 export const getContactFromAPI = (id: string) => () => {
 //   // get once

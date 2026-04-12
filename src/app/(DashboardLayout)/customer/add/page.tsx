@@ -1,17 +1,18 @@
 "use client";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
-import { Box, Button, Checkbox, FormControlLabel, FormGroup, Grid, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, FormGroup, Grid, Stack, TextField, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { searchContactByName } from "@/lib/features/contact/action";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { addContact, searchContactByName } from "@/lib/features/contact/action";
+import { useAppSelector } from "@/lib/hooks";
 
 import 'react-phone-input-2/lib/material.css';
 import './add-customer.css';
 import { PhoneInputComponent } from "./Component";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AddCustomer() {
-  const dispatch = useAppDispatch();
+  const router = useRouter();
   // Ambil data dari Redux
   const contacts = useAppSelector(state => state.contact.value);
   
@@ -19,26 +20,33 @@ export default function AddCustomer() {
   const [nameValidation, setNameValidation] = useState<any>(null);
   const [contact, setContact] = useState<any>({
     name: '',
+    nameLower: '',
     address: '',
     npwp: '',
     phone: { value: '', country: {} },
     phone2: { value: '', country: {} },
-    position: { customer: true, supplier: false, employee: false, other: false }
+    position: { customer: true, supplier: false, employee: false, other: false },
+    defaultAccount: { accountPayable: 'accountPayable', accountReceivable: 'accountReceivable', expensePayable: 'accountPayable' },
+    isActive: true
   });
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     let data = { ...contact };
-
     data[name] = value;
-    setContact(data)
+
+    if (name === "name") {
+      data.nameLower = value.toLowerCase();
+    }
+
+    setContact(data);
   }
 
   const handleChangePhone = (value: string, country: object, e: any) => {
+    // const newPhone = { ...country, value }
     const { name } = e.target;
     let data = { ...contact };
-    
-    data[name] = { value, country };
+    data[name] = { ...country, value};
     setContact(data);
   }
 
@@ -50,36 +58,51 @@ export default function AddCustomer() {
     setContact(data);
   }
 
-  const handleSubmit = async () => {
-    try {
-      // await searchContacts(contact.name);
-      const found = await searchContactByName(contact.name);
-      console.log(found);
-      found ?
-        setNameValidation("unavailable") :
-        setNameValidation(null);
-    } catch (error) {
-      console.error("error");
+  const handlePost = async () => {
+    let newContact: any = { ...contact };
+    const { npwp, address, phone, phone2 } = newContact;
+
+    npwp == "" && delete newContact.npwp;
+    address == "" && delete newContact.address;
+    
+    if(phone.value == "" || phone.value == phone.dialCode) {
+      delete newContact.phone;
+    }
+
+    if(phone2.value == "" || phone2.value == phone2.dialCode) {
+      delete newContact.phone2;
+    }
+
+    const contactId = await addContact(newContact);
+    if (contactId) {
+      // console.log('ID kontak yang dikembalikan:', contactId);
+      router.push(`/customer/data/${contactId}`)
+    } else {
+      console.log('Penambahan kontak gagal.');
     }
   }
 
+  const handleSubmit = async () => {
+    let i: number = 0;
+    Object.keys(contact.name).map((key) => key != "" && i++);
 
-  // NANTI DIHAPUS
-  // useEffect(() => {
-  //   const fetchAndFindContact = async () => {
-  //     // Jika data di Redux kosong, ambil dari API dulu
-  //     if (contacts.length === 0) {
-  //       try {
-  //         await dispatch(getContactsFromAPI()); // Gunakan .unwrap() untuk handle error thunk
-  //       } catch (error) {
-  //         console.error("Gagal mengambil kontak:", error);
-  //       }
-  //     }
-  //   };
+    if(i > 1) { // tidak boleh hanya 1 karakter
+      try {
+        const found = await searchContactByName(contact.name);
+        if (found) {
+          setNameValidation("unavailable");
+        } else {
+          setNameValidation(null);
+          handlePost();
+        }
+      } catch (error) {
+        console.error("error");
+      }
+    } else {
+      setNameValidation("required");
+    }
+  }
 
-  //   fetchAndFindContact();
-  // }, [contacts, dispatch]); // Masukkan contacts dan dispatch ke dependency array
-  
   useEffect(() => {
       // Cari kontak berdasarkan nama
       const found = contacts.find((item: any) => item.nameLower === contact.name.toLowerCase());
@@ -87,7 +110,7 @@ export default function AddCustomer() {
         setNameValidation('unavailable') :
         setNameValidation(null);
       
-  }, [contacts, contact]); // Masukkan contacts dan contact ke dependency array
+  }, [contact]); // Masukkan contacts dan contact ke dependency array
 
   return (
     <PageContainer title="Add Customer" description="this is Customer page">

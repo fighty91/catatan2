@@ -76,25 +76,32 @@ const Customer = () => {
                     >
                       {contact.name}
                     </Typography>
-                    <IconButton aria-label="settings" sx={{ mr: 0 }}>
+                    <IconButton sx={{ mr: 0 }}>
                       <MoreVert />
                     </IconButton>
                   </Stack>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }} gutterBottom>
-                    {contact.address}
+                    {contact.address || ''}
                   </Typography>
-                  <Typography
-                    className='clear-link'
-                    component="a"
-                    variant="body2"
-                    gutterBottom
-                    href={`https://wa.me/62${Number(contact.phone)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    color="primary"
-                  >
-                    {contact.phone}
-                  </Typography>
+                  {!contact.phone &&
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }} gutterBottom>
+                      {contact.phone ? contact.phone.value : ''}
+                    </Typography>
+                  }
+                  {contact.phone &&
+                    <Typography
+                      className='clear-link'
+                      component="a"
+                      variant="body2"
+                      gutterBottom
+                      href={`https://wa.me/${contact.phone.value}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      color="primary"
+                    >
+                      {contact.phone.value}
+                    </Typography>
+                  }
                 </CardContent>
               {/* </CardActionArea> */}
             </Card>
