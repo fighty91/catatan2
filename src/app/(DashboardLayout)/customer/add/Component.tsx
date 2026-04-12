@@ -14,10 +14,7 @@ export const PhoneInputComponent = ({ name, label, value, onValueChange}: Props)
   <Grid size={{ xs: 12, sm: 6 }}>
     <PhoneInput
       value={value}
-      inputProps={{
-        name,
-        required: true,
-      }}
+      inputProps={{ name }}
       onChange={onValueChange}
       country="id"
       preferredCountries={["id"]}

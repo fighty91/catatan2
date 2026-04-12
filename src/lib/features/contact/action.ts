@@ -27,25 +27,6 @@ export const addContact = async (contactData: Contact) => {
   }
 }
 
-// Contoh penggunaan:
-// const newContact = {
-//   name: 'Jane Doe',
-//   email: 'jane.doe@example.com',
-//   phone: '987-654-3210'
-// };
-
-// (async () => {
-//   const contactId = await addContact(newContact);
-//   if (contactId) {
-//     console.log('ID kontak yang dikembalikan:', contactId);
-//   } else {
-//     console.log('Penambahan kontak gagal.');
-//   }
-// })();
-
-
-
-
 export const getContactFromAPI = (id: string) => () => {
 //   // get once
 //   return new Promise((resolve) => {
