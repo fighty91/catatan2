@@ -1,11 +1,9 @@
 "use client";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
-import { MoreVert } from "@mui/icons-material";
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Checkbox, Container, Divider, FormControlLabel, FormGroup, Grid, IconButton, Stack, TextField, Typography } from "@mui/material";
-import { use, useState, useEffect } from "react";
-import { getContactByName, getContactsFromAPI, searchContactByName, searchContacts } from "@/lib/features/contact/action";
+import { Box, Button, Checkbox, FormControlLabel, FormGroup, Grid, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { searchContactByName } from "@/lib/features/contact/action";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import PhoneInput from "react-phone-input-2";
 
 import 'react-phone-input-2/lib/material.css';
 import './add-customer.css';
