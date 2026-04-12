@@ -1,5 +1,5 @@
 // import { child, DataSnapshot, get, getDatabase, onValue, ref } from "firebase/database";
-import { DataSnapshot, onValue, ref } from "firebase/database";
+import { DataSnapshot, equalTo, get, limitToFirst, onValue, orderByChild, query, ref } from "firebase/database";
 import database from "@/lib/database";
 import { setContact } from "./contactSlice";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -7,7 +7,7 @@ import { Contact } from "../type";
 
 const serviceApp = 'accountingProfit';
 
-// export const getContactFromAPI = (id) => () => {
+export const getContactFromAPI = (id: string) => () => {
 //   // get once
 //   return new Promise((resolve) => {
 //     const dbRef = ref(getDatabase());
@@ -23,7 +23,7 @@ const serviceApp = 'accountingProfit';
 //       })
 //       .catch((error) => console.error(error));
 //   });
-// };
+};
 
 export const getContactsFromAPI = () => {
   return (dispatch: Dispatch): Promise<Contact[]> => {
@@ -50,5 +50,49 @@ export const getContactsFromAPI = () => {
         resolve(contacts);
       })
     })
+  }
+}
+
+/**
+ * Mencari satu kontak berdasarkan nama (case-insensitive) di Firebase Realtime Database.
+ * Mengembalikan Promise yang berisi objek Contact pertama yang cocok atau null jika tidak ditemukan.
+ * @param searchTerm Kata kunci pencarian nama.
+ */
+export async function searchContactByName(searchTerm: string): Promise<Contact | null> {
+  if (!database) {
+    console.error("Firebase Realtime Database belum diinisialisasi.");
+    return null;
+  }
+
+  if (!searchTerm) {
+    console.warn("Kata kunci pencarian kosong.");
+    return null;
+  }
+
+  try {
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    const contactsRef = ref(database, `${serviceApp}/contacts`);
+
+    // Buat kueri untuk mencari berdasarkan nameLower, ambil hanya 1 hasil pertama
+    const q = query(
+      contactsRef,
+      orderByChild('nameLower'),
+      equalTo(lowerCaseSearchTerm),
+      limitToFirst(1) // Memastikan hanya satu hasil yang diambil
+    );
+
+    const snapshot = await get(q); // Mengambil data sekali
+
+    if (snapshot.exists()) {
+      // Jika ada data, ambil child pertama (karena kita sudah limitToFirst(1))
+      const firstChildKey = Object.keys(snapshot.val())[0];
+      return snapshot.val()[firstChildKey] as Contact;
+    } else {
+      console.log(`Tidak ada kontak ditemukan untuk '${searchTerm}'.`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error mencari kontak:', error);
+    return null;
   }
 }

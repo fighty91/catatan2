@@ -1,5 +1,6 @@
-import { Grid } from "@mui/material"
-import PhoneInput from "react-phone-input-2"
+import { Grid } from "@mui/material";
+import PhoneInput from "react-phone-input-2";
+import "./add-customer.css"
 
 type Props = {
   name: string;

@@ -1,8 +1,24 @@
 .react-tel-input .special-label {
-  /* margin: 0;
-  padding: 0;
-  color: blue;
-  text-decoration: blue;
-  z-index: -5; */
-  /* left: "10px"; */
+  left: 10px !important; /* Ubah angka ini untuk menggeser lebih jauh ke kiri */
+  top: -12px !important;
+  font-size: 11px !important;
+  color: #6b7280; /* Abu-abu (Gray-500) */
+  transition: color 0.2s ease; /* Agar transisi warna halus */
+}
+
+/* Saat input di dalamnya sedang fokus, ubah warna label jadi biru */
+.react-tel-input:focus-within .special-label {
+  color: #3b82f6 !important; /* Biru (Blue-500) */
+}
+
+/* Warna border saat hover (khas MUI) */
+.react-tel-input:hover .form-control {
+  border-color: rgba(0, 0, 0, 0.87) !important;
+}
+
+/* Opsional: Jika Anda ingin border input juga jadi biru saat fokus */
+.react-tel-input:focus-within .form-control {
+/* border: 2px solid #1976d2 !important; */
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 1px #3b82f6;
 }

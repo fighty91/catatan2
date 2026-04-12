@@ -3,7 +3,7 @@ import PageContainer from "@/app/(DashboardLayout)/components/container/PageCont
 import { MoreVert } from "@mui/icons-material";
 import { Box, Button, Card, CardActions, CardContent, CardHeader, Checkbox, Container, Divider, FormControlLabel, FormGroup, Grid, IconButton, Stack, TextField, Typography } from "@mui/material";
 import { use, useState, useEffect } from "react";
-import { getContactsFromAPI } from "@/lib/features/contact/action";
+import { getContactByName, getContactsFromAPI, searchContactByName, searchContacts } from "@/lib/features/contact/action";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import PhoneInput from "react-phone-input-2";
 
@@ -17,14 +17,6 @@ export default function AddCustomer() {
   // Ambil data dari Redux
   const contacts = useAppSelector(state => state.contact.value);
   
-  interface Position {
-    [key: string]: boolean;
-  }
-
-  interface DefaultAccount {
-    [key: string]: string;
-  }
-
   // Berikan tipe data yang jelas pada state (sesuaikan dengan interface Contact kamu)
   const [nameValidation, setNameValidation] = useState<any>(null);
   const [contact, setContact] = useState<any>({
@@ -60,28 +52,43 @@ export default function AddCustomer() {
     setContact(data);
   }
 
-  useEffect(() => {
-    const fetchAndFindContact = async () => {
-      // Jika data di Redux kosong, ambil dari API dulu
-      if (contacts.length === 0) {
-        try {
-          await dispatch(getContactsFromAPI()); // Gunakan .unwrap() untuk handle error thunk
-        } catch (error) {
-          console.error("Gagal mengambil kontak:", error);
-        }
-      }
-    };
+  const handleSubmit = async () => {
+    try {
+      // await searchContacts(contact.name);
+      const found = await searchContactByName(contact.name);
+      console.log(found);
+      found ?
+        setNameValidation("unavailable") :
+        setNameValidation(null);
+    } catch (error) {
+      console.error("error");
+    }
+  }
 
-    fetchAndFindContact();
-  }, [contacts, dispatch]); // Masukkan contacts dan dispatch ke dependency array
+
+  // NANTI DIHAPUS
+  // useEffect(() => {
+  //   const fetchAndFindContact = async () => {
+  //     // Jika data di Redux kosong, ambil dari API dulu
+  //     if (contacts.length === 0) {
+  //       try {
+  //         await dispatch(getContactsFromAPI()); // Gunakan .unwrap() untuk handle error thunk
+  //       } catch (error) {
+  //         console.error("Gagal mengambil kontak:", error);
+  //       }
+  //     }
+  //   };
+
+  //   fetchAndFindContact();
+  // }, [contacts, dispatch]); // Masukkan contacts dan dispatch ke dependency array
   
   useEffect(() => {
       // Cari kontak berdasarkan nama
-      const found = contacts.find((item: any) => item.name === contact.name);
+      const found = contacts.find((item: any) => item.nameLower === contact.name.toLowerCase());
       found ?
         setNameValidation('unavailable') :
         setNameValidation(null);
-
+      
   }, [contacts, contact]); // Masukkan contacts dan contact ke dependency array
 
   return (
@@ -175,7 +182,9 @@ export default function AddCustomer() {
         </Grid>
       </Grid>
       <Stack direction="row" sx={{ px: 2, pt: 4, justifyContent: "flex-start" }} spacing={1}>
-        <Button variant="contained">Create</Button>
+        <Button variant="contained" onClick={handleSubmit}>
+          Create
+        </Button>
         <Button variant="contained" color="error" LinkComponent={Link} href="/customer">
           Cancel
         </Button>
