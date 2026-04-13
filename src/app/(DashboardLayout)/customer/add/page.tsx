@@ -67,10 +67,18 @@ export default function AddCustomer() {
     
     if(phone.value == "" || phone.value == phone.dialCode) {
       delete newContact.phone;
+    } else {
+      const temp = phone.dialCode.length;
+      const temp2 = Number(phone.value.slice(temp));
+      newContact.phone.value = phone.dialCode + String(temp2);
     }
-
+    
     if(phone2.value == "" || phone2.value == phone2.dialCode) {
       delete newContact.phone2;
+    } else {
+      const temp = phone2.dialCode.length;
+      const temp2 = Number(phone2.value.slice(temp));
+      newContact.phone2.value = phone2.dialCode + String(temp2);
     }
 
     const contactId = await addContact(newContact);

@@ -133,7 +133,7 @@ export default function CustomerData({
                     rel="noopener noreferrer"
                     color="primary"
                   >
-                    {contact.phone.value}
+                    +{contact.phone.value}
                   </Typography>
                 }
               </Stack>
@@ -152,7 +152,7 @@ export default function CustomerData({
                     rel="noopener noreferrer"
                     color="primary"
                   >
-                    {contact.phone2.value}
+                    +{contact.phone2.value}
                   </Typography>
                 }
               </Stack>

@@ -99,7 +99,7 @@ const Customer = () => {
                       rel="noopener noreferrer"
                       color="primary"
                     >
-                      {contact.phone.value}
+                      +{contact.phone.value}
                     </Typography>
                   }
                 </CardContent>
