@@ -1,7 +1,7 @@
 "use client";
 import PageContainer from "@/app/(DashboardLayout)/components/container/PageContainer";
 import { MoreVert } from "@mui/icons-material";
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Stack, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
 import { use, useState, useEffect } from "react";
 import { getContactsFromAPI } from "@/lib/features/contact/action";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -30,6 +30,26 @@ export default function CustomerData({
   const [contact, setContact] = useState<any>(null);
   const [position, setPosition] = useState<Position>({});
   const [defaultAccount, setDefaultAccount] = useState<DefaultAccount>({});
+  const [anchorBio, setAnchorBio] = useState(null);
+  const [anchorPosition, setAnchorPosition] = useState(null);
+  const openBio = Boolean(anchorBio);
+  const openPosition = Boolean(anchorPosition);
+ 
+  const handleOpenBio = (event: any) => {
+    setAnchorBio(event.currentTarget);
+  };
+
+  const handleCloseBio = () => {
+    setAnchorBio(null);
+  };
+  
+  const handleOpenPosition = (event: any) => {
+    setAnchorPosition(event.currentTarget);
+  };
+
+  const handleClosePosition = () => {
+    setAnchorPosition(null);
+  };
 
   useEffect(() => {
     const fetchAndFindContact = async () => {
@@ -102,12 +122,29 @@ export default function CustomerData({
               sx={{ pr: 1, pb: 0, height: '64px' }}
               action={(
                 <CardActions>
-                  <IconButton aria-label="settings">
+                  <IconButton aria-label="settings" onClick={handleOpenBio}>
                     <MoreVert />
                   </IconButton>
                 </CardActions>
               )}
             />
+            {/* Message Dropdown */}
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorBio}
+              open={openBio}
+              onClose={handleCloseBio}
+              slotProps={{
+                list: {
+                  'aria-labelledby': 'basic-button',
+                },
+              }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <MenuItem onClick={handleCloseBio}>Edit Bio</MenuItem>
+              <MenuItem onClick={handleCloseBio}>Archive Contact</MenuItem>
+            </Menu>
             <CardContent sx={{ pt: 1 }}>
               <Typography gutterBottom>
                 Name: {contact.name}
@@ -170,12 +207,28 @@ export default function CustomerData({
               sx={{ pr: 1, pb: 0, height: '64px' }}
               action={(
                 <CardActions>
-                  <IconButton aria-label="settings">
+                  <IconButton aria-label="settings" onClick={handleOpenPosition}>
                     <MoreVert />
                   </IconButton>
                 </CardActions>
               )}
             />
+            {/* Message Dropdown */}
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorPosition}
+              open={openPosition}
+              onClose={handleClosePosition}
+              slotProps={{
+                list: {
+                  'aria-labelledby': 'basic-button',
+                },
+              }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <MenuItem onClick={handleClosePosition}>Edit Position</MenuItem>
+            </Menu>
             <CardContent sx={{ pt: 1 }}>
               <Typography gutterBottom>
                 Customer: {String(position.customer)}
